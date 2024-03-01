@@ -1,0 +1,118 @@
+{
+    "name": "vscode-clps2c",
+    "displayName": "CLPS2C",
+    "description": "Language support for CLPS2C (Custom Language for PlayStation 2 Cheats)",
+    "version": "1.0.0",
+    "publisher": "NiV-L-A",
+    "icon": "256x256.ico",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/NiV-L-A/vscode-CLPS2C.git"
+    },
+    "engines": {
+        "vscode": "^1.82.0"
+    },
+    "categories": [
+        "Programming Languages"
+    ],
+    "keywords": [
+        "modding",
+        "playstation2",
+        "ps2",
+        "cheat-codes",
+        "pnach",
+        "domain-specific-language"
+    ],
+    "activationEvents": [
+        "onLanguage:clps2c"
+    ],
+    "main": "./extension.js",
+    "contributes": {
+        "languages": [
+            {
+                "id": "clps2c",
+                "extensions": [".clps2c"]
+            }
+        ],
+        "grammars": [
+            {
+                "language": "clps2c",
+                "scopeName": "source.clps2c",
+                "path": "./syntaxes/clps2c.tmLanguage.json"
+            }
+        ],
+        "commands": [
+            {
+                "command": "clps2c.CompileCLPS2C",
+                "title": "Compile CLPS2C",
+                "category": "CLPS2C"
+            },
+            {
+              "command": "clps2c.PasteExampleCLPS2C",
+              "title": "Paste example code",
+              "category": "CLPS2C"
+            },
+            {
+              "command": "clps2c.PasteAsmExample",
+              "title": "Assembly - Paste example code",
+              "category": "CLPS2C"
+            },
+            {
+              "command": "clps2c.PasteAsmRegisters",
+              "title": "Assembly - Paste registers",
+              "category": "CLPS2C"
+            },
+            {
+              "command": "clps2c.PasteAsmAritInstructions",
+              "title": "Assembly - Paste arithmetic instructions",
+              "category": "CLPS2C"
+            },
+            {
+              "command": "clps2c.PasteAsmLogicalInstructions",
+              "title": "Assembly - Paste logical instructions",
+              "category": "CLPS2C"
+            },
+            {
+              "command": "clps2c.PasteAsmLoadStoreInstructions",
+              "title": "Assembly - Paste load and store instructions",
+              "category": "CLPS2C"
+            },
+            {
+              "command": "clps2c.PasteAsmBranchJumpInstructions",
+              "title": "Assembly - Paste branch and jump instructions",
+              "category": "CLPS2C"
+            },
+            {
+              "command": "clps2c.PasteAsmFloatingPointInstructions",
+              "title": "Assembly - Paste floating point instructions",
+              "category": "CLPS2C"
+            }
+        ],
+        "keybindings": [
+            {
+                "key": "ctrl+k ctrl+c",
+                "command": "editor.action.addCommentLine"
+            },
+            {
+                "key": "ctrl+k ctrl+u",
+                "command": "editor.action.removeCommentLine"
+            }
+        ]
+    },
+    "scripts": {
+        "lint": "eslint .",
+        "pretest": "npm run lint",
+        "test": "node ./test/runTest.js"
+    },
+    "devDependencies": {
+        "@types/vscode": "^1.82.0",
+        "@types/glob": "^8.1.0",
+        "@types/mocha": "^10.0.1",
+        "@types/node": "20.2.5",
+        "eslint": "^8.41.0",
+        "glob": "^8.1.0",
+        "mocha": "^10.2.0",
+        "typescript": "^5.1.3",
+        "@vscode/test-electron": "^2.3.2"
+    }
+}
