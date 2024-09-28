@@ -2,7 +2,7 @@
     "name": "vscode-clps2c",
     "displayName": "CLPS2C",
     "description": "Language support for CLPS2C (Custom Language for PlayStation 2 Cheats)",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "publisher": "NiV-L-A",
     "icon": "256x256.ico",
     "repository": {
