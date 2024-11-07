@@ -381,19 +381,18 @@ module.exports = {
                 Output = `Declares a variable with the name ${span(`(NAME)`, addressColor)} and assigns the value (VALUE) to it.<br>`
                 Output += `Once a variable is declared, declaring it once again will replace its value.<br>`
                 Output += `A variable can assume the value of an already declared variable.<br>`
-                Output += `NOTE: This instruction does not get translated to a cheat code.<br><br>`
+                Output += `NOTE: This command does not output a cheat line.<br><br>`
                 Output += `**Arguments:**<br>${getTab()}${span(`(NAME)`, addressColor)} Name of the variable<br>${getTab()}(VALUE) Value to assign to the variable`
                 break
             case "SETENCODING":
                 Output = `Sets the current encoding (VALUE) to be used for the ${span(`WriteString`, commandColor)} command.<br>`
                 Output += `The encoding chosen will be used until another ${span(`SetEncoding`, commandColor)} command is encountered.<br>`
-                Output += `NOTE: This instruction does not get translated to a cheat code.<br><br>`
+                Output += `NOTE: This command does not output a cheat line.<br><br>`
                 Output += `**Arguments:**<br>${getTab()}(VALUE)<br>${getTab()}${getTab()}UTF-8 (default)<br>${getTab()}${getTab()}UTF-16`
                 break
             case "SENDRAW":
                 Output = `Writes a raw string (VALUE) to the output.<br>`
-                Output += `Condition for (VALUE): Always use the double quotes symbol (") as the prefix and suffix when not using a declared variable.<br>`
-                Output += `NOTE: This instruction does not get translated to a cheat code.<br><br>`
+                Output += `Condition for (VALUE): Always use the double quotes symbol (") as the prefix and suffix when not using a declared variable.<br><br>`
                 Output += `**Arguments:**<br>${getTab()}(VALUE) Value to write`
                 break
             case "SENDRAWWEIGHT":
@@ -407,7 +406,7 @@ module.exports = {
             case "ASM_START":
                 Output = `Defines the beginning of an assembly scope.<br>`
                 Output += `While in this scope, all the other CLPS2C commands can't be executed (with the exception of the ${span(`ASM_END`, commandColor)} command).<br>`
-                Output += `While in this scope, values set with the ${span(`Set`, commandColor)} command will not be applied.<br>`
+                Output += `While in this scope, values set with the ${span(`Set`, commandColor)} command will not be applied, with the exception of the "${span(`J`, commandColor)}" and "${span(`JAL`, commandColor)}" opcodes.<br>`
                 Output += `Every register must be prefixed with the dollar sign ($).<br>`
                 Output += `Labels can be used, but the first instruction must be on the same line as the label ("myLabel: ${span(`li`, commandColor)} ${span(`$t0`, asmRegisterColor)},${span(`1`, numberColor)}").<br>`
                 Output += `Always have an ${span(`ASM_END`, commandColor)} to indicate the termination of the assembly scope.<br>`
@@ -420,7 +419,7 @@ module.exports = {
                 break
             case "INCLUDE":
                 Output = `Parses a specific file.<br>`
-                Output += `Condition for (VALUE): Always use the double quotes symbol (") as the prefix and suffix when not using a declared variable.<br>`
+                Output += `Condition for (VALUE): Always use the double quotes symbol (") as the prefix and suffix.<br>`
                 Output += `It's possible that an Include command is present in an included file:<br>`
                 Output += `${getTab()}For example, let the file "Engine.txt" have this line of code: Include "Player.txt"<br>`
                 Output += `${getTab()}By including the "Engine.txt" file, it will also parse the line above, and so, also include the "Player.txt" file.<br>`
@@ -458,27 +457,27 @@ module.exports = {
                 Output += `${getTab()}([ARGUMENTS]) List of arguments separated by a comma`
                 break
             case "WRITE8":
-                Output = `Writes an 8-bit (1 byte) value (VALUE) to the address (ADDRESS).<br>`
+                Output = `Writes the 8-bit (1 byte) value (VALUE) to the address (ADDRESS).<br>`
                 Output += `Condition for (VALUE): 0x00 <= (VALUE) <= 0xFF<br><br>`
                 Output += `**Arguments:**<br>${getTab()}(ADDRESS) The address to which the value will be written to<br>${getTab()}(VALUE) The value to write`
                 break
             case "WRITE16":
-                Output = `Writes a 16-bit (2 bytes) value (VALUE) to the address (ADDRESS).<br>`
+                Output = `Writes the 16-bit (2 bytes) value (VALUE) to the address (ADDRESS).<br>`
                 Output += `Condition for (VALUE): 0x0000 <= (VALUE) <= 0xFFFF<br><br>`
                 Output += `**Arguments:**<br>${getTab()}(ADDRESS) The address to which the value will be written to<br>${getTab()}(VALUE) The value to write`
                 break
             case "WRITE32":
-                Output = `Writes a 32-bit (4 bytes) value (VALUE) to the address (ADDRESS).<br>`
+                Output = `Writes the 32-bit (4 bytes) value (VALUE) to the address (ADDRESS).<br>`
                 Output += `Condition for (VALUE): 0x00000000 <= (VALUE) <= 0xFFFFFFFF<br><br>`
                 Output += `**Arguments:**<br>${getTab()}(ADDRESS) The address to which the value will be written to<br>${getTab()}(VALUE) The value to write`
                 break
             case "WRITEFLOAT":
-                Output = `Writes a 32-bit floating-point value (VALUE) to the address (ADDRESS).<br>`
+                Output = `Writes the 32-bit floating-point value (VALUE) to the address (ADDRESS).<br>`
                 Output += `If (VALUE) is an hexadecimal number, it will be parsed as one.<br><br>`
                 Output += `**Arguments:**<br>${getTab()}(ADDRESS) The address to which the value will be written to<br>${getTab()}(VALUE) The value to write`
                 break
             case "WRITESTRING":
-                Output = `Writes a string (VALUE) to the address (ADDRESS) with the current encoding (can be changed with the ${span(`SetEncoding`, commandColor)} command).<br>`
+                Output = `Writes the string (VALUE) to the address (ADDRESS) with the current encoding (can be changed with the ${span(`SetEncoding`, commandColor)} command).<br>`
                 Output += `Condition for (VALUE): Always use the double quotes symbol (") as the prefix and suffix when not using a declared variable.<br>`
                 Output += `NOTE: Append "\\0" at the end of the string to add a null terminator character.<br>`
                 Output += `NOTE: When ((VALUE).Length % 4 != 0), more writes of different data types are needed:<br>`
@@ -489,7 +488,7 @@ module.exports = {
                 Output += `**Arguments:**<br>${getTab()}(ADDRESS) The address to which the value will be written to<br>${getTab()}(VALUE) The value to write`
                 break
             case "WRITEBYTES":
-                Output = `Writes a byte array (VALUE) to the address (ADDRESS).<br>`
+                Output = `Writes the byte array (VALUE) to the address (ADDRESS).<br>`
                 Output += `Condition for (VALUE): Always use the double quotes symbol (") as the prefix and suffix when not using a declared variable.<br>`
                 Output += `NOTE: When ((VALUE).Length % 4 != 0), more writes of different data types are needed:<br>`
                 Output += `${getTab()}"00 11 22 33"${getTab(16)}-> Write32.<br>`
@@ -499,28 +498,28 @@ module.exports = {
                 Output += `**Arguments:**<br>${getTab()}(ADDRESS) The address to which the value will be written to<br>${getTab()}(VALUE) The value to write`
                 break
             case "WRITEPOINTER8":
-                Output = `Writes an 8-bit (1 byte) value (VALUE) to the address calculated by<br>`
+                Output = `Writes the 8-bit (1 byte) value (VALUE) to the address calculated by<br>`
                 Output += `loading the base (ADDRESS1) and adding (ADDRESS2) and ${span(`[,ADDRESSN]`, addressColor)}.<br>`
                 Output += `Each (ADDRESS) must be separated by a comma (,).<br>`
                 Output += `Condition for (VALUE): 0x00 <= (VALUE) <= 0xFF<br><br>`
                 Output += `**Arguments:**<br>${getTab()}(ADDRESS1),(ADDRESS2)${span(`[,ADDRESSN]`, addressColor)} The pointer chain to which the value will be written to<br>${getTab()}(VALUE) The value to write`
                 break
             case "WRITEPOINTER16":
-                Output = `Writes a 16-bit (2 bytes) value (VALUE) to the address calculated by<br>`
+                Output = `Writes the 16-bit (2 bytes) value (VALUE) to the address calculated by<br>`
                 Output += `loading the base (ADDRESS1) and adding (ADDRESS2) and ${span(`[,ADDRESSN]`, addressColor)}.<br>`
                 Output += `Each (ADDRESS) must be separated by a comma (,).<br>`
                 Output += `Condition for (VALUE): 0x0000 <= (VALUE) <= 0xFFFF<br><br>`
                 Output += `**Arguments:**<br>${getTab()}(ADDRESS1),(ADDRESS2)${span(`[,ADDRESSN]`, addressColor)} The pointer chain to which the value will be written to<br>${getTab()}(VALUE) The value to write`
                 break
             case "WRITEPOINTER32":
-                Output = `Writes a 32-bit (4 bytes) value (VALUE) to the address calculated by<br>`
+                Output = `Writes the 32-bit (4 bytes) value (VALUE) to the address calculated by<br>`
                 Output += `loading the base (ADDRESS1) and adding (ADDRESS2) and ${span(`[,ADDRESSN]`, addressColor)}.<br>`
                 Output += `Each (ADDRESS) must be separated by a comma (,).<br>`
                 Output += `Condition for (VALUE): 0x00000000 <= (VALUE) <= 0xFFFFFFFF<br><br>`
                 Output += `**Arguments:**<br>${getTab()}(ADDRESS1),(ADDRESS2)${span(`[,ADDRESSN]`, addressColor)} The pointer chain to which the value will be written to<br>${getTab()}(VALUE) The value to write`
                 break
             case "WRITEPOINTERFLOAT":
-                Output = `Writes a 32-bit floating-point value (VALUE) to the address calculated by<br>`
+                Output = `Writes the 32-bit floating-point value (VALUE) to the address calculated by<br>`
                 Output += `loading the base (ADDRESS1) and adding (ADDRESS2) and ${span(`[,ADDRESSN]`, addressColor)}.<br>`
                 Output += `Each (ADDRESS) must be separated by a comma (,).<br>`
                 Output += `If (VALUE) is an hexadecimal number, it will be parsed as one.<br><br>`
@@ -531,28 +530,27 @@ module.exports = {
                 Output += `**Arguments:**<br>${getTab()}(ADDRESS1) Source address<br>${getTab()}(ADDRESS2) Destination address<br>${getTab()}(VALUE) Length in bytes`
                 break
             case "FILL8":
-                Output = `Writes an 8-bit (1 byte) value (VALUE1) for (VALUE2) bytes starting from the address (ADDRESS).<br>`
+                Output = `Writes the 8-bit (1 byte) value (VALUE1) for (VALUE2) bytes starting from the address (ADDRESS).<br>`
                 Output += `Condition for (VALUE1): 0x00 <= (VALUE1) <= 0xFF<br>`
                 Output += `Condition for (VALUE2): 0x00 <= (VALUE2) <= 0xFFFF<br>`
                 Output += `NOTE: This command outputs a 8-type code ("8-bit constant serial write").<br>`
-                Output += `${getTab()}Latest PCSX2 (v1.7.X) does not support 8-type codes.<br><br>`
+                Output += `${getTab()}Latest PCSX2 (v2.2.0) does not support 8-type codes.<br><br>`
                 Output += `**Arguments:**<br>${getTab()}(ADDRESS) Starting address<br>${getTab()}(VALUE1) Value to write<br>${getTab()}(VALUE2) Length in bytes`
                 break
             case "FILL16":
-                Output = `Writes a 16-bit (2 bytes) value (VALUE1) for (VALUE2) bytes starting from the address (ADDRESS).<br>`
+                Output = `Writes the 16-bit (2 bytes) value (VALUE1) for (VALUE2) bytes starting from the address (ADDRESS).<br>`
                 Output += `Condition for (VALUE1): 0x00 <= (VALUE1) <= 0xFFFF<br>`
                 Output += `Condition for (VALUE2): 0x00 <= (VALUE2) <= 0x1FFFE<br>`
                 Output += `NOTE: (VALUE2) must be divisible by 2.<br>`
                 Output += `NOTE: This command outputs a 8-type code ("16-bit constant serial write").<br>`
-                Output += `${getTab()}Latest PCSX2 (v1.7.X) does not support 8-type codes.<br><br>`
+                Output += `${getTab()}Latest PCSX2 (v2.2.0) does not support 8-type codes.<br><br>`
                 Output += `**Arguments:**<br>${getTab()}(ADDRESS) Starting address<br>${getTab()}(VALUE1) Value to write<br>${getTab()}(VALUE2) Length in bytes`
                 break
             case "FILL32":
-                Output = `Writes a 32-bit (4 bytes) value (VALUE1) for (VALUE2) bytes starting from the address (ADDRESS).<br>`
+                Output = `Writes the 32-bit (4 bytes) value (VALUE1) for (VALUE2) bytes starting from the address (ADDRESS).<br>`
                 Output += `Condition for (VALUE1): 0x00 <= (VALUE1) <= 0xFFFFFFFF<br>`
                 Output += `Condition for (VALUE2): 0x00 <= (VALUE2) <= 0x3FFFC<br>`
-                Output += `NOTE: (VALUE2) must be divisible by 4.<br>`
-                Output += `NOTE: This command outputs a 4-type code ("32-bit constant serial write").<br><br>`
+                Output += `NOTE: (VALUE2) must be divisible by 4.<br><br>`
                 Output += `**Arguments:**<br>${getTab()}(ADDRESS) Starting address<br>${getTab()}(VALUE1) Value to write<br>${getTab()}(VALUE2) Length in bytes`
                 break
             case "INCREMENT8":
@@ -580,27 +578,33 @@ module.exports = {
                 Output += `**Arguments:**<br>${getTab()}(ADDRESS) The address to which the value will be read from and written to<br>${getTab()}(VALUE) The value that will be subtracted to the existing value at the specified address<br>`
                 break
             case "OR8":
-                Output = `Bitwise 8-bit (1 byte) OR operation between the value stored at address (ADDRESS) and (VALUE). Store the result at the address (ADDRESS).<br><br>`
+                Output = `Bitwise 8-bit (1 byte) OR operation between the value stored at address (ADDRESS) and (VALUE).<br>`
+                Output += `Store the result at the address (ADDRESS).<br><br>`
                 Output += `**Arguments:**<br>${getTab()}(ADDRESS) The address to which the value will be read from and written to<br>${getTab()}(VALUE) The value that will be OR'ed to the existing value at the specified address<br>`
                 break
             case "OR16":
-                Output = `Bitwise 16-bit (2 bytes) OR operation between the value stored at address (ADDRESS) and (VALUE). Store the result at the address (ADDRESS).<br><br>`
+                Output = `Bitwise 16-bit (2 bytes) OR operation between the value stored at address (ADDRESS) and (VALUE).<br>`
+                Output += `Store the result at the address (ADDRESS).<br><br>`
                 Output += `**Arguments:**<br>${getTab()}(ADDRESS) The address to which the value will be read from and written to<br>${getTab()}(VALUE) The value that will be OR'ed to the existing value at the specified address<br>`
                 break
             case "AND8":
-                Output = `Bitwise 8-bit (1 byte) AND operation between the value stored at address (ADDRESS) and (VALUE). Store the result at the address (ADDRESS).<br><br>`
+                Output = `Bitwise 8-bit (1 byte) AND operation between the value stored at address (ADDRESS) and (VALUE).<br>`
+                Output += `Store the result at the address (ADDRESS).<br><br>`
                 Output += `**Arguments:**<br>${getTab()}(ADDRESS) The address to which the value will be read from and written to<br>${getTab()}(VALUE) The value that will be AND'ed to the existing value at the specified address<br>`
                 break
             case "AND16":
-                Output = `Bitwise 16-bit (2 bytes) AND operation between the value stored at address (ADDRESS) and (VALUE). Store the result at the address (ADDRESS).<br><br>`
+                Output = `Bitwise 16-bit (2 bytes) AND operation between the value stored at address (ADDRESS) and (VALUE).<br>`
+                Output += `Store the result at the address (ADDRESS).<br><br>`
                 Output += `**Arguments:**<br>${getTab()}(ADDRESS) The address to which the value will be read from and written to<br>${getTab()}(VALUE) The value that will be AND'ed to the existing value at the specified address<br>`
                 break
             case "XOR8":
-                Output = `Bitwise 8-bit (1 byte) XOR operation between the value stored at address (ADDRESS) and (VALUE). Store the result at the address (ADDRESS).<br><br>`
+                Output = `Bitwise 8-bit (1 byte) XOR operation between the value stored at address (ADDRESS) and (VALUE).<br>`
+                Output += `Store the result at the address (ADDRESS).<br><br>`
                 Output += `**Arguments:**<br>${getTab()}(ADDRESS) The address to which the value will be read from and written to<br>${getTab()}(VALUE) The value that will be XOR'ed to the existing value at the specified address<br>`
                 break
             case "XOR16":
-                Output = `Bitwise 16-bit (2 bytes) XOR operation between the value stored at address (ADDRESS) and (VALUE). Store the result at the address (ADDRESS).<br><br>`
+                Output = `Bitwise 16-bit (2 bytes) XOR operation between the value stored at address (ADDRESS) and (VALUE).<br>`
+                Output += `Store the result at the address (ADDRESS).<br><br>`
                 Output += `**Arguments:**<br>${getTab()}(ADDRESS) The address to which the value will be read from and written to<br>${getTab()}(VALUE) The value that will be XOR'ed to the existing value at the specified address<br>`
                 break
             case "IF":
