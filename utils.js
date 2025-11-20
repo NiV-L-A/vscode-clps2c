@@ -112,28 +112,36 @@ module.exports = {
     GetAsmRegistersCode: function() {
         let Tmp = `/*\n`
         Tmp += `General-Purpose Registers (GPRs)\n`
-        Tmp += `Number      Name        Description\n`
-        Tmp += `$0          $zero       Always zero.\n`
-        Tmp += `$1          $at         Reserved for assembler.\n`
-        Tmp += `$2,$3       $v0,$v1     First and second return values by functions.\n`
-        Tmp += `$4-$7       $a0-$a3     First four arguments to functions.\n`
-        Tmp += `$8-$15      $t0-$t7     Temporary registers. $t0-$t3 may also be used as additional argument registers.\n`
-        Tmp += `$16-$23     $s0-$s7     Saved registers. Functions must save and restore these before using them.\n`
-        Tmp += `$24,$25     $t8,$t9     More temporary registers.\n`
-        Tmp += `$26,$27     $k0,$k1     Reserved for kernel (operating system).\n`
-        Tmp += `$28         $gp         Global pointer.\n`
-        Tmp += `$29         $sp         Stack pointer.\n`
-        Tmp += `$30         $fp,$s8     Frame pointer.\n`
-        Tmp += `$31         $ra         Return address. Used by JAL and JALR to store the address to return to after a function.\n`
-        Tmp += `-           $pc         Program Counter. Indicates the address of the currently-executing instruction.\n`
-        Tmp += `-           $hi         High-order bits. Stores the remainder of a division and the first 32 bits of the result of a multiplication. Can be accessed with mfhi.\n`
-        Tmp += `-           $lo         Low-order bits. Stores the quotient of a division and the second 32 bits of the result of a multiplication. Can be accessed with mflo.\n`
+        Tmp += `Name        Description\n`
+        Tmp += `$zero       Always zero.\n`
+        Tmp += `$at         "Assembler temporary". Reserved for the assembler.\n`
+        Tmp += `$v0,$v1     First and second return values by functions.\n`
+        Tmp += `$a0-$a3     First four arguments to functions.\n`
+        Tmp += `$t0-$t7     Temporary registers. $t0-$t3 may also be used as additional argument registers.\n`
+        Tmp += `$s0-$s7     Saved registers. Functions must save and restore these before using them.\n`
+        Tmp += `$t8,$t9     More temporary registers.\n`
+        Tmp += `$k0,$k1     Reserved for kernel (operating system).\n`
+        Tmp += `$gp         Global pointer.\n`
+        Tmp += `$sp         Stack pointer.\n`
+        Tmp += `$fp         Frame pointer.\n`
+        Tmp += `$ra         Return address. Used by JAL and JALR to store the address to return to after a function.\n`
+        Tmp += `$pc         Program Counter. Indicates the address of the currently-executing instruction.\n`
+        Tmp += `$hi         High-order bits. Stores the remainder of a division and the first 32 bits of the result of a multiplication. Can be accessed with mfhi.\n`
+        Tmp += `$lo         Low-order bits. Stores the quotient of a division and the second 32 bits of the result of a multiplication. Can be accessed with mflo.\n`
         Tmp += `Floating-point Registers (FPRs)\n`
-        Tmp += `Number      Name        Description\n`
-        Tmp += `-           $f0-$f3     Return values.\n`
-        Tmp += `-           $f4-$f11    Temporary registers.\n`
-        Tmp += `-           $f12-$f19   Argument registers.\n`
-        Tmp += `-           $f20-$f31   Saved registers.\n`
+        Tmp += `Name        Description\n`
+        Tmp += `$f0-$f3     Return values.\n`
+        Tmp += `$f4-$f11    Temporary registers.\n`
+        Tmp += `$f12-$f19   Argument registers.\n`
+        Tmp += `$f20-$f31   Saved registers.\n`
+        Tmp += `Vector Unit 0 Floating Registers (VU0f)\n`
+        Tmp += `Name        Description\n`
+        Tmp += `$vf0        Always "0,0,0,1".\n`
+        Tmp += `$vf1-$vf31  Used for SIMD operations.\n`
+        Tmp += `Vector Unit 0 Integer Registers (VU0i)\n`
+        Tmp += `Name        Description\n`
+        Tmp += `$vi0        Always zero.\n`
+        Tmp += `$vi1-$vi15  These registers are used for loop counters and load/store address calculations.\n`
         Tmp += `*/`
         return Tmp
     },
@@ -222,6 +230,8 @@ module.exports = {
         Tmp += `    Syntax: lwu $rt, offset($rs)\n`
         Tmp += `ld: Load doubleword. Loads a doubleword from memory in the $rt register.\n`
         Tmp += `    Syntax: ld $rt, offset($rs)\n`
+        Tmp += `lq: Load quadword. Loads a quadword from memory in the $rt register.\n`
+        Tmp += `    Syntax: lq $rt, offset($rs)\n`
         Tmp += `lui: Load upper immediate. Loads the immediate value into the upper half of the $rt register.\n`
         Tmp += `    Syntax: lui $rt, immediate\n`
         Tmp += `sb: Store byte. Stores a byte from the $rt register into memory.\n`
@@ -232,6 +242,8 @@ module.exports = {
         Tmp += `    Syntax: sw $rt, offset($rs)\n`
         Tmp += `sd: Store doubleword. Stores a doubleword from the $rt register into memory.\n`
         Tmp += `    Syntax: sd $rt, offset($rs)\n`
+        Tmp += `sq: Store quadword. Stores a quadword from the $rt register into memory.\n`
+        Tmp += `    Syntax: sq $rt, offset($rs)\n`
         Tmp += `*/`
         return Tmp
     },
@@ -406,10 +418,14 @@ module.exports = {
             case "ASM_START":
                 Output = `Defines the beginning of an assembly scope.<br>`
                 Output += `While in this scope, all the other CLPS2C commands can't be executed (with the exception of the ${span(`ASM_END`, commandColor)} command).<br>`
-                Output += `While in this scope, values set with the ${span(`Set`, commandColor)} command will not be applied, with the exception of the "${span(`J`, commandColor)}" and "${span(`JAL`, commandColor)}" opcodes.<br>`
-                Output += `Every register must be prefixed with the dollar sign ($).<br>`
-                Output += `Labels can be used, but the first instruction must be on the same line as the label ("myLabel: ${span(`li`, commandColor)} ${span(`$t0`, asmRegisterColor)},${span(`1`, numberColor)}").<br>`
-                Output += `Always have an ${span(`ASM_END`, commandColor)} to indicate the termination of the assembly scope.<br>`
+                Output += `All "immediate" fields are parsed as decimal, or as hexadecimal if they have the "0x" prefix.<br>`
+                Output += `The "immediate" fields of the load, store, J and JAL instructions are always parsed as hexadecimal.<br>`
+                Output += `While in this scope, values set with the ${span(`Set`, commandColor)} command will be applied only for the "immediate" fields:<br>`
+                Output += `${getTab()}For example, the immediate value for the "addi" instruction or the offset for a load/store instruction.<br>`
+                Output += `${getTab()}The "J" and "JAL" opcodes also support the addition operator.<br>`
+                Output += `Registers may or may not be prefixed with a dollar sign ($).<br>`
+                Output += `Labels can be used and are case-insensitive. The first instruction can be on the same line as the label or on a new line.<br>`
+                Output += `Always have an ${span(`ASM_END`, commandColor)} command to indicate the termination of the assembly scope.<br>`
                 Output += `Check out the "CLPS2C: Assembly - Paste example code" command from the command palette to see an example usage.<br>`
                 Output += `NOTE: You must manually add the branch delay slot after any branch instruction.<br><br>`
                 Output += `**Arguments:**<br>${getTab()}(ADDRESS) Starting address`
@@ -418,8 +434,13 @@ module.exports = {
                 Output = `Defines the ending of an assembly scope. See the ${span(`ASM_START`, commandColor)} command for more details.<br>`
                 break
             case "INCLUDE":
-                Output = `Parses a specific file.<br>`
+                Output = `Parses a CLPS2C or a nocash symbol file.<br>`
                 Output += `Condition for (VALUE): Always use the double quotes symbol (") as the prefix and suffix.<br>`
+                Output += `If the included file has the ".sym" extension, it is parsed as a nocash symbol file:<br>`
+                Output += `${getTab()}A "Set" variable is created for every label and function definition (data directives/global variables are ignored).<br>`
+                Output += `${getTab()}These variables can be used for normal CLPS2C commands and in assembly scopes.<br>`
+                Output += `${getTab()}Please, check the example ".sym" file for more information about the correct syntax of a nocash symbol file.<br>`
+                Output += `If the included file does not have the ".sym" extension, it is parsed as a CLPS2C file.<br>`
                 Output += `It's possible that an Include command is present in an included file:<br>`
                 Output += `${getTab()}For example, let the file "Engine.txt" have this line of code: Include "Player.txt"<br>`
                 Output += `${getTab()}By including the "Engine.txt" file, it will also parse the line above, and so, also include the "Player.txt" file.<br>`
@@ -534,7 +555,7 @@ module.exports = {
                 Output += `Condition for (VALUE1): 0x00 <= (VALUE1) <= 0xFF<br>`
                 Output += `Condition for (VALUE2): 0x00 <= (VALUE2) <= 0xFFFF<br>`
                 Output += `NOTE: This command outputs a 8-type code ("8-bit constant serial write").<br>`
-                Output += `${getTab()}Latest PCSX2 (v2.2.0) does not support 8-type codes.<br><br>`
+                Output += `${getTab()}Latest PCSX2 (v2.4.0) does not support 8-type codes.<br><br>`
                 Output += `**Arguments:**<br>${getTab()}(ADDRESS) Starting address<br>${getTab()}(VALUE1) Value to write<br>${getTab()}(VALUE2) Length in bytes`
                 break
             case "FILL16":
@@ -543,7 +564,7 @@ module.exports = {
                 Output += `Condition for (VALUE2): 0x00 <= (VALUE2) <= 0x1FFFE<br>`
                 Output += `NOTE: (VALUE2) must be divisible by 2.<br>`
                 Output += `NOTE: This command outputs a 8-type code ("16-bit constant serial write").<br>`
-                Output += `${getTab()}Latest PCSX2 (v2.2.0) does not support 8-type codes.<br><br>`
+                Output += `${getTab()}Latest PCSX2 (v2.4.0) does not support 8-type codes.<br><br>`
                 Output += `**Arguments:**<br>${getTab()}(ADDRESS) Starting address<br>${getTab()}(VALUE1) Value to write<br>${getTab()}(VALUE2) Length in bytes`
                 break
             case "FILL32":

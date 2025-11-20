@@ -1,3 +1,7 @@
+Version 1.0.3 (20/11/2025)</br>
+    - Fixed a bug where function names were not highlighted unless the command type was written exactly as "Function" or "Call".
+    - Changed the hover messages for some commands to reflect changes in the documentation of the compiler.
+
 Version 1.0.2 (07/11/2024)</br>
     - Assembly opcode "subu" now gets highlighted.
     - Changed the hover messages for some commands to reflect changes in the documentation of the compiler.

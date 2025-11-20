@@ -18,24 +18,23 @@
 		{
 			"include": "#operators"
 		},
+        {
+			"name": "constant.character",
+			"match": "^[ \t]*(?i)(Set|SetEncoding|SE|SendRaw|SR|SendRawWeight|SRW|ASM_START|ASM_END|Include|Function|EndFunction|Call|Write8|W8|Write16|W16|Write32|W32|WriteFloat|WF|WriteString|WS|WriteBytes|WB|WritePointer8|WP8|WritePointer16|WP16|WritePointer32|WP32|WritePointerFloat|WPF|CopyBytes|CB|Fill8|F8|Fill16|F16|Fill32|F32|Increment8|I8|Increment16|I16|Increment32|I32|Decrement8|D8|Decrement16|D16|Decrement32|D32|OR8|OR16|AND8|AND16|XOR8|XOR16)\\b"
+		},
 		{
 			"name": "entity.name.tag.css",
-			"match": "(?<=(^[ \t]*Function|Call) )\\w+"
+			"match": "(?<=(^[ \t]*(?i)Function|Call) )\\w+"
 		},
-		{
+        {
+            "match": "(?i)^([ \\t]*(?:\\w+:[ \\t]*)?)(abs\\.s|add\\.s|adda\\.s|c\\.eq\\.s|c\\.f\\.s|c\\.le\\.s|c\\.lt\\.s|cvt\\.w\\.s|div\\.s|madd\\.s|madda\\.s|max\\.s|min\\.s|mov\\.s|msub\\.s|msuba\\.s|mul\\.s|mula\\.s|neg\\.s|rsqrt\\.s|sqrt\\.s|sub\\.s|suba\\.s|cvt\\.s\\.w|addi|addiu|andi|beq|b|beqz|beql|beqzl|bgtz|bgtzl|blez|blezl|bne|bnez|bnel|bnezl|daddi|daddiu|lb|lbu|ld|ldl|ldr|lh|lhu|lui|lw|lwl|lwr|lwu|ori|sb|sd|sdl|sdr|sh|slti|sltiu|sw|swl|swr|xori|lq|sq|lwc1|swc1|lqc2|sqc2|add|addu|and|break|dadd|daddu|div|divu|dsll|dsll32|dsllv|dsra|dsra32|dsrav|dsrl|dsrl32|dsrlv|dsub|dsubu|jalr|jr|mfhi|mflo|movn|movz|mthi|mtlo|mult|multu|nor|or|move|dmove|sll|nop|sllv|slt|sltu|sra|srav|srl|srlv|sub|neg|subu|negu|sync|syscall|teq|tge|tgeu|tlt|tltu|tne|xor|mfsa|mtsa|bgez|bgezal|bgezall|bgezl|bltz|bltzal|bltzall|bltzl|teqi|tgei|tgeiu|tlti|tltiu|tnei|mtsab|mtsah|j|jal|div1|divu1|madd|madd1|maddu|maddu1|mfhi1|mflo1|mthi1|mtlo1|mult1|multu1|plzcw|psllh|psllw|psrah|psraw|psrlh|psrlw|pabsh|pabsw|paddub|padduh|padduw|padsbh|pceqb|pceqh|pceqw|pextub|pextuh|pextuw|pminh|pminw|psubub|psubuh|psubuw|qfsrv|paddb|paddh|paddsb|paddsh|paddsw|paddw|pcgtb|pcgth|pcgtw|pext5|pextlb|pextlh|pextlw|pmaxh|pmaxw|ppac5|ppacb|ppach|ppacw|psubb|psubh|psubsb|psubsh|psubsw|psubw|pand|pcpyld|pdivbw|pdivw|pexeh|pexew|phmadh|phmsbh|pinth|pmaddh|pmaddw|pmfhi|pmflo|pmsubh|pmsubw|pmulth|pmultw|prevh|prot3w|psllvw|psrlvw|pxor|pcpyh|pcpyud|pdivuw|pexch|pexcw|pinteh|pmadduw|pmthi|pmtlo|pmultuw|pnor|por|psravw|pmfhl\\.lh|pmfhl\\.lw|pmfhl\\.sh|pmfhl\\.slw|pmfhl\\.uw|pmthl\\.lw|cfc1|ctc1|mfc1|mtc1|cfc2|ctc2|qmfc2|qmtc2|(vabs|vadda|vaddai|vaddaq|vaddax|vadday|vaddaz|vaddaw|vftoi0|vftoi4|vftoi12|vftoi15|vitof0|vitof4|vitof12|vitof15|vmadda|vmaddai|vmaddaq|vmaddax|vmadday|vmaddaz|vmaddaw|vmfir|vmove|vmr32|vmsuba|vmsubai|vmsubaq|vmsubax|vmsubay|vmsubaz|vmsubaw|vmula|vmulai|vmulaq|vmulax|vmulay|vmulaz|vmulaw|vnop|vrget|vrnext|vsuba|vsubai|vsubaq|vsubax|vsubay|vsubaz|vsubaw|vwaitq)(\\.(?!$)x?y?z?w?)?|vclipw\\.xyz|vopmula\\.xyz|(vadd|vaddi|vaddq|vaddx|vaddy|vaddz|vaddw|viadd|viaddi|viand|vior|visub|vmadd|vmaddi|vmaddq|vmaddx|vmaddy|vmaddz|vmaddw|vmax|vmaxi|vmaxx|vmaxy|vmaxz|vmaxw|vmini|vminii|vminix|vminiy|vminiz|vminiw|vmsub|vmsubi|vmsubq|vmsubx|vmsuby|vmsubz|vmsubw|vmul|vmuli|vmulq|vmulx|vmuly|vmulz|vmulw|vopmsub\\.xyz|vsub|vsubi|vsubq|vsubx|vsuby|vsubz|vsubw)(\\.(?!$)x?y?z?w?)?|bc1f|bc1fl|bc1t|bc1tl|blt|bge|ble|bgt|li)\\b",
+            "captures": {
+                "2": { "name": "constant.character" }
+            }
+        },
+        {
 			"name": "string.regexp",
-			"match": "\\$(zero|at|v0|v1|a0|a1|a2|a3|t0|t1|t2|t3|t4|t5|t6|t7|s0|s1|s2|s3|s4|s5|s6|s7|t8|t9|k0|k1|gp|sp|fp|s8|ra|pc|hi|lo|f31|f30|f29|f28|f27|f26|f25|f24|f23|f22|f21|f20|f19|f18|f17|f16|f15|f14|f13|f12|f11|f10|f9|f8|f7|f6|f5|f4|f3|f2|f1|f0)"
-		},
-		{
-			"match": "^[ \t]*(?i)(Set|SetEncoding|SE|SendRaw|SR|SendRawWeight|SRW|ASM_START|ASM_END|Include|Function|EndFunction|Call|Write8|W8|Write16|W16|Write32|W32|WriteFloat|WF|WriteString|WS|WriteBytes|WB|WritePointer8|WP8|WritePointer16|WP16|WritePointer32|WP32|WritePointerFloat|WPF|CopyBytes|CB|Fill8|F8|Fill16|F16|Fill32|F32|Increment8|I8|Increment16|I16|Increment32|I32|Decrement8|D8|Decrement16|D16|Decrement32|D32|OR8|OR16|AND8|AND16|XOR8|XOR16)\\b|((\\w*?:?\\s*)(add\\.s|sub\\.s|mul\\.s|div\\.s|sqrt\\.s|abs\\.s|mov\\.s|neg\\.s|madd\\.s|msub\\.s|cvt\\.w\\.s|max\\.s|min\\.s|c\\.f\\.s|c\\.eq\\.s|c\\.lt\\.s|c\\.le\\.s|cvt\\.s\\.w|j|jal|beq|beqz|b|bne|bnez|blez|bgtz|addi|addiu|slti|sltiu|andi|ori|xori|lui|beql|beqzl|bnel|bnezl|blezl|bgtzl|daddi|daddiu|ldl|ldr|lb|lh|lwl|lw|lbu|lhu|lwr|lwu|sb|sh|swl|sw|sdl|sdr|swr|lwc1|ld|li|swc1|sd|sll|nop|srl|sra|sllv|srlv|srav|jr|jalr|movz|movn|syscall|break|sync|mfhi|mthi|mflo|mtlo|dsllv|dsrlv|dsrav|mult|multu|div|divu|add|addu|move|sub|subu|negu|and|or|xor|nor|slt|sltu|dadd|daddu|dsub|dsubu|tge|tgeu|tlt|tltu|teq|tne|dsll|dsrl|dsra|dsll32|dsrl32|dsra32|bltz|bgez|bltzl|bgezl|tgei|tgeiu|tlti|tltiu|teqi|tnei|bltzal|bgezal|bltzall|bgezall|mfc1|cfc1|mtc1|ctc1|bc1f|bc1t|bc1fl|bc1tl))\\b",
-			"captures": {
-				"1": {
-					"name": "constant.character"
-				},
-				"4": {
-					"name": "constant.character"
-				}
-			}
+			"match": "(?<=[ ,(])\\$?(zero|at|v0|v1|a0|a1|a2|a3|t0|t1|t2|t3|t4|t5|t6|t7|s0|s1|s2|s3|s4|s5|s6|s7|t8|t9|k0|k1|gp|sp|fp|ra|f31|f30|f29|f28|f27|f26|f25|f24|f23|f22|f21|f20|f19|f18|f17|f16|f15|f14|f13|f12|f11|f10|f09|f9|f08|f8|f07|f7|f06|f6|f05|f5|f04|f4|f03|f3|f02|f2|f01|f1|f00|f0|vf31|vf30|vf29|vf28|vf27|vf26|vf25|vf24|vf23|vf22|vf21|vf20|vf19|vf18|vf17|vf16|vf15|vf14|vf13|vf12|vf11|vf10|vf09|vf9|vf08|vf8|vf07|vf7|vf06|vf6|vf05|vf5|vf04|vf4|vf03|vf3|vf02|vf2|vf01|vf1|vf00|vf0|vi15|vi14|vi13|vi12|vi11|vi10|vi09|vi9|vi08|vi8|vi07|vi7|vi06|vi6|vi05|vi5|vi04|vi4|vi03|vi3|vi02|vi2|vi01|vi1|vi00|vi0)\\b"
 		},
 		{
 			"name": "constant.numeric",
